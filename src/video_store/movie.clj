@@ -31,9 +31,24 @@
            (* 1.5 (- days-rented 3))
            0)))
 
+(defmulti valid-return-amount? (fn [price-code _] price-code))
+(defmethod valid-return-amount? ::regular
+  [_ amount]
+  (or (= 2.0 amount) (= 0.0 (rem (- amount 2) 1.5))))
+
+(defmethod valid-return-amount? ::new-release
+  [_ amount]
+  (= 0.0 (rem amount 3.0)))
+
+(defmethod valid-return-amount? ::childrens
+  [_ amount]
+  (= 0.0 (rem amount 1.5)))
+
 (s/fdef amount
         :args (s/cat :movie ::movie :days (s/and integer? #(> % 0)))
-        :ret (s/and double? #(>= % 1.5)))
+        :ret (s/and double? #(>= % 1.5))
+        :fn #(valid-return-amount? (-> % :args :movie ::price-code)
+                                   (-> % :ret)))
 
 (defmulti frequent-renter-points (fn [movie _] (::price-code movie)))
 
