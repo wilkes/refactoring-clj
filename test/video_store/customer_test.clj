@@ -53,7 +53,7 @@
             (is (= (c/statement c)
                    "Rental Record for Martin\n\tBambi\t3.0\nAmount owed is 3.0\nYou earned 1 frequent renter points"))))))))
 
-(deftest statement-test
+(deftest statement-data-test
   (testing "empty rentals"
     (is (= (c/statement-data customer) {:frequent-renter-points 0
                                         :items []
