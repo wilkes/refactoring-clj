@@ -11,16 +11,14 @@
   (let [state (transient
                 {:total-amount 0.0
                  :frequent-renter-points 0
-                 :items []
-                 :this-amount 0.0})]
+                 :items []})]
     (doseq [rental (-> customer :rentals)]
-      (assoc! state :this-amount (r/rental-amount rental))
       (assoc! state :frequent-renter-points (+ (-> state :frequent-renter-points)
                                                (r/frequent-renter-points rental)))
       (assoc! state :items (conj (-> state :items) [(-> rental :movie :title)
-                                                    (-> state :this-amount)]))
-      (assoc! state :total-amount (+ (-> state :total-amount) (-> state :this-amount))))
-    (persistent! (dissoc! state :this-amount))))
+                                                    (r/rental-amount rental)]))
+      (assoc! state :total-amount (+ (-> state :total-amount) (r/rental-amount rental))))
+    (persistent! state)))
 
 (defn statement [customer]
   (let [state (transient {:result (str "Rental Record for " (:name customer) "\n")})
