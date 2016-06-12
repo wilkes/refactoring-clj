@@ -15,10 +15,8 @@
                  :this-amount 0.0})]
     (doseq [rental (-> customer :rentals)]
       (assoc! state :this-amount (r/rental-amount rental))
-      (assoc! state :frequent-renter-points (inc (-> state :frequent-renter-points)))
-      (when (and (= m/NEW-RELEASE (-> rental :movie :price-code))
-                 (> (-> rental :days-rented) 1))
-        (assoc! state :frequent-renter-points (inc (-> state :frequent-renter-points))))
+      (assoc! state :frequent-renter-points (+ (-> state :frequent-renter-points)
+                                               (r/frequent-renter-points rental)))
       (assoc! state :items (conj (-> state :items) [(-> rental :movie :title)
                                                     (-> state :this-amount)]))
       (assoc! state :total-amount (+ (-> state :total-amount) (-> state :this-amount))))

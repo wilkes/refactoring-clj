@@ -13,3 +13,9 @@
     m/CHILDRENS (+ 1.5 (if (> (-> rental :days-rented) 3)
                          (* 1.5 (- (-> rental :days-rented) 3))
                          0))))
+
+(defn frequent-renter-points [rental]
+  (if (and (= m/NEW-RELEASE (-> rental :movie :price-code))
+           (> (-> rental :days-rented) 1))
+    2
+    1))
