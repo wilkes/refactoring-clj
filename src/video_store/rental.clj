@@ -3,12 +3,8 @@
 
 (defrecord Rental [movie days-rented])
 
-
 (defn rental-amount [rental]
   (m/amount (:movie rental) (:days-rented rental)))
 
 (defn frequent-renter-points [rental]
-  (if (and (= m/NEW-RELEASE (-> rental :movie :price-code))
-           (> (-> rental :days-rented) 1))
-    2
-    1))
+  (m/frequent-renter-points (:movie rental) (:days-rented rental)))
