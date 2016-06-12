@@ -31,5 +31,5 @@
   (if (> days-rented 1) 2 1))
 
 (defmethod frequent-renter-points :default
-  [_movie days-rented]
+  [_movie _days-rented]
   1)
