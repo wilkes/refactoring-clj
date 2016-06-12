@@ -7,14 +7,12 @@
 (defn add-rental [customer rental]
   (update customer :rentals conj rental))
 
-(defn statement-data [customer]
-  (let [state (transient
-                {:total-amount (reduce + 0.0 (map r/rental-amount (:rentals customer)))
-                 :frequent-renter-points (reduce + 0 (map r/frequent-renter-points (:rentals customer)))
-                 :items (into [] (map (fn [rental] [(-> rental :movie :title)
-                                                    (r/rental-amount rental)])
-                                      (:rentals customer)))})]
-    (persistent! state)))
+(defn statement-data [{:keys [rentals]}]
+  {:total-amount (reduce + 0.0 (map r/rental-amount rentals))
+   :frequent-renter-points (reduce + 0 (map r/frequent-renter-points rentals))
+   :items (into [] (map (fn [rental] [(-> rental :movie :title)
+                                      (r/rental-amount rental)])
+                        rentals))})
 
 (defn statement [customer]
   (let [state (transient {:result (str "Rental Record for " (:name customer) "\n")})
