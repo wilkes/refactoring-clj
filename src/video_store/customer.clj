@@ -1,6 +1,7 @@
 (ns video-store.customer
   (:require [video-store.rental :as r]
-            [video-store.movie :as m]))
+            [video-store.movie :as m]
+            [clojure.string :as string]))
 
 (defrecord Customer [name rentals])
 
@@ -15,13 +16,10 @@
                         rentals))})
 
 (defn statement [customer]
-  (let [state (transient {:result (str "Rental Record for " (:name customer) "\n")})
-        data (statement-data customer)]
-    (doseq [[title amount] (-> data :items)]
-      (assoc! state :result (str (-> state :result) "\t" title "\t" amount "\n")))
-    (assoc! state :result (str (-> state :result)
-                               "Amount owed is " (-> data :total-amount) "\n"))
-    (assoc! state :result (str (-> state :result)
-                               "You earned " (-> data :frequent-renter-points)
-                               " frequent renter points"))
-    (-> state :result)))
+  (let [data (statement-data customer)]
+    (str "Rental Record for " (:name customer) "\n"
+         (string/join (map (fn [[title amount]]
+                             (str "\t" title "\t" amount "\n"))
+                           (:items data)))
+         "Amount owed is " (-> data :total-amount) "\n"
+         "You earned " (-> data :frequent-renter-points) " frequent renter points")))
