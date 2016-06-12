@@ -5,9 +5,9 @@
             [video-store.rental :as r]))
 
 (def customer (c/->Customer "Martin" []))
-(def regular-movie (m/->Movie "Mad Max" m/REGULAR))
-(def new-movie (m/->Movie "The Hobbit" m/NEW-RELEASE))
-(def childrens-movie (m/->Movie "Bambi" m/CHILDRENS))
+(def regular-movie (m/make-movie "Mad Max" m/REGULAR))
+(def new-movie (m/make-movie "The Hobbit" m/NEW-RELEASE))
+(def childrens-movie (m/make-movie "Bambi" m/CHILDRENS))
 
 (deftest statement-test
   (testing "empty rentals"
@@ -124,4 +124,3 @@
                                                   :amount 3.0
                                                   :frequent-renter-points 1}]
                                          :total-amount 3.0}))))))))
-
