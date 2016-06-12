@@ -9,15 +9,14 @@
 
 (defn statement-data [customer]
   (let [state (transient
-                {:total-amount 0.0
+                {:total-amount (reduce + 0.0 (map r/rental-amount (:rentals customer)))
                  :frequent-renter-points 0
                  :items []})]
     (doseq [rental (-> customer :rentals)]
       (assoc! state :frequent-renter-points (+ (-> state :frequent-renter-points)
                                                (r/frequent-renter-points rental)))
       (assoc! state :items (conj (-> state :items) [(-> rental :movie :title)
-                                                    (r/rental-amount rental)]))
-      (assoc! state :total-amount (+ (-> state :total-amount) (r/rental-amount rental))))
+                                                    (r/rental-amount rental)])))
     (persistent! state)))
 
 (defn statement [customer]
