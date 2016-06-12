@@ -2,11 +2,7 @@
   (:require [clojure.spec :as s]
             [clojure.spec.test :as test]))
 
-(def ^:const REGULAR 0)
-(def ^:const NEW-RELEASE 1)
-(def ^:const CHILDRENS 2)
-
-(s/def ::price-code #{REGULAR NEW-RELEASE CHILDRENS})
+(s/def ::price-code #{::regular ::new-release ::childrens})
 (s/def ::title (s/and string? (complement empty?)))
 (s/def ::movie (s/keys :req [::title ::price-code]))
 
@@ -19,17 +15,17 @@
 
 (defmulti amount (fn [movie _] (::price-code movie)))
 
-(defmethod amount REGULAR
+(defmethod amount ::regular
   [_movie days-rented]
   (+ 2.0 (if (> days-rented 2)
            (* 1.5 (- days-rented 2))
            0)))
 
-(defmethod amount NEW-RELEASE
+(defmethod amount ::new-release
   [_movie days-rented]
   (* 3.0 days-rented))
 
-(defmethod amount CHILDRENS
+(defmethod amount ::childrens
   [_movie days-rented]
   (+ 1.5 (if (> days-rented 3)
            (* 1.5 (- days-rented 3))
@@ -41,7 +37,7 @@
 
 (defmulti frequent-renter-points (fn [movie _] (::price-code movie)))
 
-(defmethod frequent-renter-points NEW-RELEASE
+(defmethod frequent-renter-points ::new-release
   [_movie days-rented]
   (if (> days-rented 1) 2 1))
 
