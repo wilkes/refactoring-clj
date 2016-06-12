@@ -62,65 +62,74 @@
       (testing "for 1 day"
         (let [c (c/add-rental customer (r/make-rental regular-movie 1))]
           (is (= (c/statement-data c) {:frequent-renter-points 1
-                                       :items [{:title "Mad Max"
-                                                :amount 2.0
-                                                :frequent-renter-points 1}]
+                                       :items [{::r/title "Mad Max"
+                                                ::r/amount 2.0
+                                                ::r/frequent-renter-points 1
+                                                ::r/days-rented 1}]
                                        :total-amount 2.0}))))
       (testing "for 2 day"
         (let [c (c/add-rental customer (r/make-rental regular-movie 2))]
           (is (= (c/statement-data c) {:frequent-renter-points 1
-                                       :items [{:title "Mad Max"
-                                                :amount 2.0
-                                                :frequent-renter-points 1}]
+                                       :items [{::r/title "Mad Max"
+                                                ::r/amount 2.0
+                                                ::r/frequent-renter-points 1
+                                                ::r/days-rented 2}]
                                        :total-amount 2.0}))))
       (testing "for 3 day"
         (let [c (c/add-rental customer (r/make-rental regular-movie 3))]
           (is (= (c/statement-data c) {:frequent-renter-points 1
-                                       :items [{:title "Mad Max"
-                                                :amount 3.5
-                                                :frequent-renter-points 1}]
+                                       :items [{::r/title "Mad Max"
+                                                ::r/amount 3.5
+                                                ::r/frequent-renter-points 1
+                                                ::r/days-rented 3}]
                                        :total-amount 3.5}))))
       (testing "with one new release rental"
         (testing "for 1 day"
           (let [c (c/add-rental customer (r/make-rental new-movie 1))]
             (is (= (c/statement-data c) {:frequent-renter-points 1
-                                         :items [{:title "The Hobbit"
-                                                  :amount 3.0
-                                                  :frequent-renter-points 1}]
+                                         :items [{::r/title "The Hobbit"
+                                                  ::r/amount 3.0
+                                                  ::r/frequent-renter-points 1
+                                                  ::r/days-rented 1}]
                                          :total-amount 3.0}))))
         (testing "for 2 day"
           (let [c (c/add-rental customer (r/make-rental new-movie 2))]
             (is (= (c/statement-data c) {:frequent-renter-points 2
-                                         :items [{:title "The Hobbit"
-                                                  :amount 6.0
-                                                  :frequent-renter-points 2}]
+                                         :items [{::r/title "The Hobbit"
+                                                  ::r/amount 6.0
+                                                  ::r/frequent-renter-points 2
+                                                  ::r/days-rented 2}]
                                          :total-amount 6.0}))))
         (testing "for 3 day"
           (let [c (c/add-rental customer (r/make-rental new-movie 3))]
             (is (= (c/statement-data c) {:frequent-renter-points 2
-                                         :items [{:title "The Hobbit"
-                                                  :amount 9.0
-                                                  :frequent-renter-points 2}]
+                                         :items [{::r/title "The Hobbit"
+                                                  ::r/amount 9.0
+                                                  ::r/frequent-renter-points 2
+                                                  ::r/days-rented 3}]
                                          :total-amount 9.0})))))
       (testing "with one childrens rental"
         (testing "for 1 day"
           (let [c (c/add-rental customer (r/make-rental childrens-movie 1))]
             (is (= (c/statement-data c) {:frequent-renter-points 1
-                                         :items [{:title "Bambi"
-                                                  :amount 1.5
-                                                  :frequent-renter-points 1}]
+                                         :items [{::r/title "Bambi"
+                                                  ::r/amount 1.5
+                                                  ::r/frequent-renter-points 1
+                                                  ::r/days-rented 1}]
                                          :total-amount 1.5}))))
         (testing "for 3 day"
           (let [c (c/add-rental customer (r/make-rental childrens-movie 3))]
             (is (= (c/statement-data c) {:frequent-renter-points 1
-                                         :items [{:title "Bambi"
-                                                  :amount 1.5
-                                                  :frequent-renter-points 1}]
+                                         :items [{::r/title "Bambi"
+                                                  ::r/amount 1.5
+                                                  ::r/frequent-renter-points 1
+                                                  ::r/days-rented 3}]
                                          :total-amount 1.5}))))
         (testing "for 4 day"
           (let [c (c/add-rental customer (r/make-rental childrens-movie 4))]
             (is (= (c/statement-data c) {:frequent-renter-points 1
-                                         :items [{:title "Bambi"
-                                                  :amount 3.0
-                                                  :frequent-renter-points 1}]
+                                         :items [{::r/title "Bambi"
+                                                  ::r/amount 3.0
+                                                  ::r/frequent-renter-points 1
+                                                  ::r/days-rented 4}]
                                          :total-amount 3.0}))))))))
