@@ -1,10 +1,7 @@
 (ns video-store.rental
   (:require [video-store.movie :as m]))
 
-(defrecord Rental [movie days-rented])
-
-(defn amount [rental]
-  (m/amount (:movie rental) (:days-rented rental)))
-
-(defn frequent-renter-points [rental]
-  (m/frequent-renter-points (:movie rental) (:days-rented rental)))
+(defn make-rental [movie days-rented]
+  {:title (:title movie)
+   :amount (m/amount movie days-rented)
+   :frequent-renter-points (m/frequent-renter-points movie days-rented)})
