@@ -24,8 +24,12 @@
            (* 1.5 (- days-rented 3))
            0)))
 
-(defn frequent-renter-points [movie days-rented]
-  (if (and (= NEW-RELEASE (-> movie :price-code))
-           (> days-rented 1))
-    2
-    1))
+(defmulti frequent-renter-points (fn [movie _] (:price-code movie)))
+
+(defmethod frequent-renter-points NEW-RELEASE
+  [_movie days-rented]
+  (if (> days-rented 1) 2 1))
+
+(defmethod frequent-renter-points :default
+  [_movie days-rented]
+  1)
