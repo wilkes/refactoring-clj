@@ -6,15 +6,23 @@
 
 (defrecord Movie [title price-code])
 
-(defn amount [movie days-rented]
-  (condp = (-> movie :price-code)
-    REGULAR (+ 2.0 (if (> days-rented 2)
-                     (* 1.5 (- days-rented 2))
-                     0))
-    NEW-RELEASE (* 3.0 days-rented)
-    CHILDRENS (+ 1.5 (if (> days-rented 3)
-                       (* 1.5 (- days-rented 3))
-                       0))))
+(defmulti amount (fn [movie _] (:price-code movie)))
+
+(defmethod amount REGULAR
+  [_movie days-rented]
+  (+ 2.0 (if (> days-rented 2)
+           (* 1.5 (- days-rented 2))
+           0)))
+
+(defmethod amount NEW-RELEASE
+  [_movie days-rented]
+  (* 3.0 days-rented))
+
+(defmethod amount CHILDRENS
+  [_movie days-rented]
+  (+ 1.5 (if (> days-rented 3)
+           (* 1.5 (- days-rented 3))
+           0)))
 
 (defn frequent-renter-points [movie days-rented]
   (if (and (= NEW-RELEASE (-> movie :price-code))
