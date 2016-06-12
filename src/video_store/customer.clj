@@ -9,10 +9,10 @@
   (update customer :rentals conj rental))
 
 (defn statement-data [{:keys [rentals]}]
-  {:total-amount (reduce + 0.0 (map r/rental-amount rentals))
+  {:total-amount (reduce + 0.0 (map r/amount rentals))
    :frequent-renter-points (reduce + 0 (map r/frequent-renter-points rentals))
    :items (mapv (fn [rental] {:title (-> rental :movie :title)
-                              :amount (r/rental-amount rental)})
+                              :amount (r/amount rental)})
                 rentals)})
 
 (defn statement [customer]

@@ -3,7 +3,7 @@
 
 (defrecord Rental [movie days-rented])
 
-(defn rental-amount [rental]
+(defn amount [rental]
   (m/amount (:movie rental) (:days-rented rental)))
 
 (defn frequent-renter-points [rental]
