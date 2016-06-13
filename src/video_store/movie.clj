@@ -32,6 +32,7 @@
            0)))
 
 (defmulti valid-return-amount? (fn [price-code _] price-code))
+
 (defmethod valid-return-amount? ::regular
   [_ amount]
   (or (= 2.0 amount) (= 0.0 (rem (- amount 2) 1.5))))
@@ -62,4 +63,7 @@
 
 (s/fdef frequent-renter-points
         :args (s/cat :movie ::movie :days (s/and integer? #(> % 0)))
-        :ret #{1 2})
+        :ret #{1 2}
+        :fn #(let [pc (-> % :args :movie ::price-code)
+                   s (if (= ::new-release pc) #{1 2} #{1})]
+              (s (-> % :ret))))
